@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import it.uniprisma.railwaysMySQL.models.enums.FuelType;
 import it.uniprisma.railwaysMySQL.models.enums.TrainType;
 import it.uniprisma.railwaysMySQL.models.enums.WagonClass;
@@ -31,6 +32,7 @@ public class TrainController {
     }
 
     @Operation(summary = "Add a new train")
+    @Tag(name = "trains")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Created",
                     content = {@Content(mediaType = "application/json",
@@ -43,6 +45,7 @@ public class TrainController {
     }
 
     @Operation(summary = "Get trains list with optional filters")
+    @Tag(name = "trains")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful operation",
                     content = {@Content(mediaType = "application/json",
@@ -57,6 +60,7 @@ public class TrainController {
     }
 
     @Operation(summary = "Get an existing train")
+    @Tag(name = "trains")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful operation",
                     content = {@Content(mediaType = "application/json",
@@ -69,6 +73,7 @@ public class TrainController {
     }
 
     @Operation(summary = "Update an existing train")
+    @Tag(name = "trains")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Train successfully updated",
                     content = {@Content(mediaType = "application/json",
@@ -82,6 +87,7 @@ public class TrainController {
     }
 
     @Operation(summary = "Delete an existing train")
+    @Tag(name = "trains")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "No content"),
             @ApiResponse(responseCode = "404", description = "No train to delete")})
@@ -92,10 +98,11 @@ public class TrainController {
     }
 
     @Operation(summary = "Get wagons list of a specific train with optional filters")
+    @Tag(name = "wagons-trains")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful operation",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Wagon.class))}),
+                            schema = @Schema(implementation = Page.class))}),
             @ApiResponse(responseCode = "404", description = "No train to get", content = @Content)})
     @GetMapping("/{trainId}/wagons")
     @ResponseStatus(HttpStatus.OK)
@@ -116,14 +123,15 @@ public class TrainController {
     }
 
     @Operation(summary = "Get routes list of a specific train with optional filters")
+    @Tag(name = "routes-trains")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful operation",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Route.class))}),
+                            schema = @Schema(implementation = Page.class))}),
             @ApiResponse(responseCode = "404", description = "No train to get", content = @Content)})
     @GetMapping("/{trainId}/routes")
     @ResponseStatus(HttpStatus.OK)
-    public Page<Route> findWagonsOfTrainPage(@PathVariable("trainId") Integer trainId,
+    public Page<Route> findRoutesOfTrainPage(@PathVariable("trainId") Integer trainId,
                                              @RequestParam(required = false) String startStation,
                                              @RequestParam(required = false) String destinationStation,
                                              @RequestParam(required = false) String binaryType,
@@ -135,10 +143,9 @@ public class TrainController {
     }
 
     @Operation(summary = "Add a new association between route and train")
+    @Tag(name = "routes-trains")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Created",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(type = "object", ref = "TrainRouteAssociation"))}),
+            @ApiResponse(responseCode = "201", description = "Created", content = {@Content}),
             @ApiResponse(responseCode = "409", description = "Already exists an association between ids in path", content = @Content)})
     @PostMapping("/{trainId}/routes/{routeId}")
     @ResponseStatus(HttpStatus.CREATED)
@@ -147,6 +154,7 @@ public class TrainController {
     }
 
     @Operation(summary = "Delete an existing association between train and route")
+    @Tag(name = "routes-trains")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "No content"),
             @ApiResponse(responseCode = "404", description = "No association to delete")})
@@ -157,10 +165,9 @@ public class TrainController {
     }
 
     @Operation(summary = "Add or rewrite a new association between wagon and train")
+    @Tag(name = "wagons-trains")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Created",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(type = "object", ref = "TrainRouteAssociation"))}),
+            @ApiResponse(responseCode = "201", description = "Created", content = {@Content}),
             @ApiResponse(responseCode = "409", description = "Already exists an association between ids in path", content = @Content)})
     @PostMapping("/{trainId}/wagon/{wagonId}")
     @ResponseStatus(HttpStatus.CREATED)

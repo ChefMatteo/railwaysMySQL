@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import it.uniprisma.railwaysMySQL.models.WagonDOT;
 import it.uniprisma.railwaysMySQL.models.enums.FuelType;
 import it.uniprisma.railwaysMySQL.models.enums.WagonClass;
@@ -27,18 +28,20 @@ public class WagonController {
     }
 
     @Operation(summary = "Add a new wagon")
+    @Tag(name = "wagons")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Created",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(oneOf = {RestaurantWagon.class, PassengerWagon.class, BedWagon.class, MotorWagon.class}))}),
-            @ApiResponse(responseCode = "409", description = "Already exists a train with id in body", content = @Content)})
+            @ApiResponse(responseCode = "409", description = "Parameters not available for type of wagon in body", content = @Content)})
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Wagon createTrain(@RequestBody WagonDOT wagonDOT) {
+    public Wagon createWagon(@RequestBody WagonDOT wagonDOT) {
         return wagonService.createSingleWagon(wagonDOT);
     }
 
     @Operation(summary = "Get wagons list with optional filters")
+    @Tag(name = "wagons")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful operation",
                     content = {@Content(mediaType = "application/json",
@@ -62,6 +65,7 @@ public class WagonController {
     }
 
     @Operation(summary = "Get an existing wagon")
+    @Tag(name = "wagons")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful operation",
                     content = {@Content(mediaType = "application/json",
@@ -74,6 +78,7 @@ public class WagonController {
     }
 
     @Operation(summary = "Update an existing wagon")
+    @Tag(name = "wagons")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Wagon successfully updated",
                     content = {@Content(mediaType = "application/json",
@@ -88,6 +93,7 @@ public class WagonController {
     }
 
     @Operation(summary = "Delete an existing wagon")
+    @Tag(name = "wagons")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "No content"),
             @ApiResponse(responseCode = "404", description = "No wagon to delete")})

@@ -1,0 +1,1006 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:8081
+  description: Generated server url
+paths:
+  /api/wagons/{wagonId}:
+    get:
+      tags:
+      - wagons
+      summary: Get an existing wagon
+      operationId: getSingleWagon
+      parameters:
+      - name: wagonId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                oneOf:
+                - $ref: '#/components/schemas/RestaurantWagon'
+                - $ref: '#/components/schemas/PassengerWagon'
+                - $ref: '#/components/schemas/BedWagon'
+                - $ref: '#/components/schemas/MotorWagon'
+        "404":
+          description: No wagon to get
+    put:
+      tags:
+      - wagons
+      summary: Update an existing wagon
+      operationId: updateSingleWagon
+      parameters:
+      - name: wagonId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WagonDOT'
+        required: true
+      responses:
+        "404":
+          description: No wagon to update
+        "200":
+          description: Wagon successfully updated
+          content:
+            application/json:
+              schema:
+                type: object
+                oneOf:
+                - $ref: '#/components/schemas/RestaurantWagon'
+                - $ref: '#/components/schemas/PassengerWagon'
+                - $ref: '#/components/schemas/BedWagon'
+                - $ref: '#/components/schemas/MotorWagon'
+        "400":
+          description: Parameters not available for type of wagon in body
+    delete:
+      tags:
+      - wagons
+      summary: Delete an existing wagon
+      operationId: deleteWagon
+      parameters:
+      - name: wagonId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "404":
+          description: No wagon to delete
+        "204":
+          description: No content
+  /api/trains/{trainId}:
+    get:
+      tags:
+      - trains
+      summary: Get an existing train
+      operationId: getSingleTrain
+      parameters:
+      - name: trainId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "404":
+          description: No train to get
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Train'
+    put:
+      tags:
+      - trains
+      summary: Update an existing train
+      operationId: updateSingleTrain
+      parameters:
+      - name: trainId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Train'
+        required: true
+      responses:
+        "200":
+          description: Train successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Train'
+        "404":
+          description: No train to update
+    delete:
+      tags:
+      - trains
+      summary: Delete an existing train
+      operationId: deleteTrain
+      parameters:
+      - name: trainId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "404":
+          description: No train to delete
+        "204":
+          description: No content
+  /api/routes/{routeId}:
+    get:
+      tags:
+      - routes
+      summary: Get an existing route
+      operationId: getSingleRoute
+      parameters:
+      - name: routeId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "404":
+          description: No route to get
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Route'
+    put:
+      tags:
+      - routes
+      summary: Update an existing route
+      operationId: updateSingleRoute
+      parameters:
+      - name: routeId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Route'
+        required: true
+      responses:
+        "404":
+          description: No route to update
+        "200":
+          description: Route successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Route'
+    delete:
+      tags:
+      - routes
+      summary: Delete an existing route
+      operationId: deleteRoute
+      parameters:
+      - name: routeId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "404":
+          description: No route to delete
+        "204":
+          description: No content
+  /api/wagons:
+    get:
+      tags:
+      - wagons
+      summary: Get wagons list with optional filters
+      operationId: findWagonPage
+      parameters:
+      - name: bathroom
+        in: query
+        required: false
+        schema:
+          type: boolean
+      - name: wagonClass
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - PRIMA
+          - SECONDA
+          - ECONOMY
+      - name: wagonType
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - MOTOR
+          - PASSENGER
+          - BED
+          - RESTAURANT
+      - name: minimumTables
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: kitchenType
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: fuelType
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - ELECTRIC
+          - DIESEL
+      - name: minimumBeds
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: bedType
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: minimumSeats
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: offset
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: limit
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Page'
+        "400":
+          description: Bad request
+    post:
+      tags:
+      - wagons
+      summary: Add a new wagon
+      operationId: createWagon
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WagonDOT'
+        required: true
+      responses:
+        "409":
+          description: Parameters not available for type of wagon in body
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/RestaurantWagon'
+                - $ref: '#/components/schemas/PassengerWagon'
+                - $ref: '#/components/schemas/BedWagon'
+                - $ref: '#/components/schemas/MotorWagon'
+  /api/trains:
+    get:
+      tags:
+      - trains
+      summary: Get trains list with optional filters
+      operationId: findTrainPage
+      parameters:
+      - name: companyName
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: trainType
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - REGIONALE
+          - INTERCITY
+          - FRECCIAROSSA
+      - name: offset
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: limit
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Page'
+    post:
+      tags:
+      - trains
+      summary: Add a new train
+      operationId: createTrain
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Train'
+        required: true
+      responses:
+        "409":
+          description: Already exists a train with id in body
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Train'
+  /api/trains/{trainId}/wagon/{wagonId}:
+    post:
+      tags:
+      - wagons-trains
+      summary: Add or rewrite a new association between wagon and train
+      operationId: createOrUpdateTrainWagonAssociation
+      parameters:
+      - name: trainId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: wagonId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "409":
+          description: Already exists an association between ids in path
+        "201":
+          description: Created
+  /api/trains/{trainId}/routes/{routeId}:
+    post:
+      tags:
+      - routes-trains
+      summary: Add a new association between route and train
+      operationId: createTrainRouteAssociation
+      parameters:
+      - name: trainId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: routeId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "409":
+          description: Already exists an association between ids in path
+        "201":
+          description: Created
+    delete:
+      tags:
+      - routes-trains
+      summary: Delete an existing association between train and route
+      operationId: deleteTrainRouteAssociation
+      parameters:
+      - name: trainId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: routeId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "404":
+          description: No association to delete
+        "204":
+          description: No content
+  /api/routes:
+    get:
+      tags:
+      - routes
+      summary: Get routes list with optional filters
+      operationId: findRoutePage
+      parameters:
+      - name: destinationStationName
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: startStationName
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: binaryType
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: minimumLength
+        in: query
+        required: false
+        schema:
+          type: number
+          format: double
+      - name: maxLength
+        in: query
+        required: false
+        schema:
+          type: number
+          format: double
+      - name: offset
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: limit
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Page'
+        "400":
+          description: Bad request
+    post:
+      tags:
+      - routes
+      summary: Add a new route
+      operationId: createRoute
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Route'
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Route'
+        "409":
+          description: Already exists a route with id in body
+  /api/trains/{trainId}/wagons:
+    get:
+      tags:
+      - wagons-trains
+      summary: Get wagons list of a specific train with optional filters
+      operationId: findWagonsOfTrainPage
+      parameters:
+      - name: trainId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: wagonType
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - MOTOR
+          - PASSENGER
+          - BED
+          - RESTAURANT
+      - name: kitchenType
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: fuelType
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - ELECTRIC
+          - DIESEL
+      - name: bathroom
+        in: query
+        required: false
+        schema:
+          type: boolean
+      - name: wagonClass
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - PRIMA
+          - SECONDA
+          - ECONOMY
+      - name: bedType
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: minimumTables
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: minimumBeds
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: minimumSeats
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: offset
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: limit
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Page'
+        "404":
+          description: No train to get
+  /api/trains/{trainId}/routes:
+    get:
+      tags:
+      - routes-trains
+      summary: Get routes list of a specific train with optional filters
+      operationId: findRoutesOfTrainPage
+      parameters:
+      - name: trainId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: startStation
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: destinationStation
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: binaryType
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: minimumLength
+        in: query
+        required: false
+        schema:
+          type: number
+          format: double
+      - name: maxLength
+        in: query
+        required: false
+        schema:
+          type: number
+          format: double
+      - name: offset
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: limit
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Page'
+        "404":
+          description: No train to get
+components:
+  schemas:
+    WagonDOT:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        trainId:
+          type: integer
+          format: int32
+        wagonClass:
+          type: string
+          enum:
+          - PRIMA
+          - SECONDA
+          - ECONOMY
+        wagonType:
+          type: string
+          enum:
+          - MOTOR
+          - PASSENGER
+          - BED
+          - RESTAURANT
+        length:
+          type: number
+          format: double
+        width:
+          type: number
+          format: double
+        height:
+          type: number
+          format: double
+        bathroom:
+          type: boolean
+        fuelType:
+          type: string
+          enum:
+          - ELECTRIC
+          - DIESEL
+        kitchenType:
+          type: string
+        bedType:
+          type: string
+        nseats:
+          type: integer
+          format: int32
+        ntables:
+          type: integer
+          format: int32
+        nbeds:
+          type: integer
+          format: int32
+    RestaurantWagon:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        train:
+          type: integer
+          format: int32
+        wagonClass:
+          type: string
+          enum:
+          - PRIMA
+          - SECONDA
+          - ECONOMY
+        length:
+          type: number
+          format: double
+        width:
+          type: number
+          format: double
+        height:
+          type: number
+          format: double
+        bathroom:
+          type: boolean
+        wagonType:
+          type: string
+          enum:
+          - MOTOR
+          - PASSENGER
+          - BED
+          - RESTAURANT
+        kitchenType:
+          type: string
+        ntables:
+          type: integer
+          format: int32
+    PassengerWagon:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        train:
+          type: integer
+          format: int32
+        wagonClass:
+          type: string
+          enum:
+          - PRIMA
+          - SECONDA
+          - ECONOMY
+        length:
+          type: number
+          format: double
+        width:
+          type: number
+          format: double
+        height:
+          type: number
+          format: double
+        bathroom:
+          type: boolean
+        wagonType:
+          type: string
+          enum:
+          - MOTOR
+          - PASSENGER
+          - BED
+          - RESTAURANT
+        nseats:
+          type: integer
+          format: int32
+    BedWagon:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        train:
+          type: integer
+          format: int32
+        wagonClass:
+          type: string
+          enum:
+          - PRIMA
+          - SECONDA
+          - ECONOMY
+        length:
+          type: number
+          format: double
+        width:
+          type: number
+          format: double
+        height:
+          type: number
+          format: double
+        bathroom:
+          type: boolean
+        wagonType:
+          type: string
+          enum:
+          - MOTOR
+          - PASSENGER
+          - BED
+          - RESTAURANT
+        bedType:
+          type: string
+        nbeds:
+          type: integer
+          format: int32
+    MotorWagon:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        train:
+          type: integer
+          format: int32
+        wagonClass:
+          type: string
+          enum:
+          - PRIMA
+          - SECONDA
+          - ECONOMY
+        length:
+          type: number
+          format: double
+        width:
+          type: number
+          format: double
+        height:
+          type: number
+          format: double
+        bathroom:
+          type: boolean
+        wagonType:
+          type: string
+          enum:
+          - MOTOR
+          - PASSENGER
+          - BED
+          - RESTAURANT
+        fuelType:
+          type: string
+          enum:
+          - ELECTRIC
+          - DIESEL
+    Route:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        binaryType:
+          type: string
+        startStation:
+          type: string
+        destinationStation:
+          type: string
+        length:
+          type: number
+          format: double
+        trains:
+          uniqueItems: true
+          type: array
+          items:
+            properties:
+              trainIDs:
+                type: number
+                format: int32
+    Train:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        type:
+          type: string
+          enum:
+          - REGIONALE
+          - INTERCITY
+          - FRECCIAROSSA
+        company:
+          type: string
+        routes:
+          uniqueItems: true
+          type: array
+          items:
+            properties:
+              routeIDs:
+                type: number
+                format: int32
+        wagons:
+          uniqueItems: true
+          type: array
+          items:
+            properties:
+              wagonIDs:
+                type: number
+                format: int32
+    Page:
+      type: object
+      properties:
+        totalPages:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            type: object
+        number:
+          type: integer
+          format: int32
+        sort:
+          $ref: '#/components/schemas/Sort'
+        first:
+          type: boolean
+        last:
+          type: boolean
+        numberOfElements:
+          type: integer
+          format: int32
+        pageable:
+          $ref: '#/components/schemas/Pageable'
+        empty:
+          type: boolean
+    Pageable:
+      type: object
+      properties:
+        offset:
+          type: integer
+          format: int64
+        sort:
+          $ref: '#/components/schemas/Sort'
+        pageSize:
+          type: integer
+          format: int32
+        pageNumber:
+          type: integer
+          format: int32
+        unpaged:
+          type: boolean
+        paged:
+          type: boolean
+    Sort:
+      type: object
+      properties:
+        sorted:
+          type: boolean
+        unsorted:
+          type: boolean
+        empty:
+          type: boolean

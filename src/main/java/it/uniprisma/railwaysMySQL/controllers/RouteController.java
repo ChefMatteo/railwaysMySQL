@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import it.uniprisma.railwaysMySQL.persistence.DAO.Route;
 import it.uniprisma.railwaysMySQL.services.RouteService;
 import org.springframework.data.domain.Page;
@@ -23,6 +24,7 @@ public class RouteController {
     }
 
     @Operation(summary = "Add a new route")
+    @Tag(name = "routes")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Created",
                     content = {@Content(mediaType = "application/json",
@@ -35,6 +37,7 @@ public class RouteController {
     }
 
     @Operation(summary = "Get routes list with optional filters")
+    @Tag(name = "routes")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful operation",
                     content = {@Content(mediaType = "application/json",
@@ -53,6 +56,7 @@ public class RouteController {
     }
 
     @Operation(summary = "Get an existing route")
+    @Tag(name = "routes")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful operation",
                     content = {@Content(mediaType = "application/json",
@@ -65,6 +69,7 @@ public class RouteController {
     }
 
     @Operation(summary = "Update an existing route")
+    @Tag(name = "routes")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Route successfully updated",
                     content = {@Content(mediaType = "application/json",
@@ -72,12 +77,13 @@ public class RouteController {
             @ApiResponse(responseCode = "404", description = "No route to update", content = @Content)})
     @PutMapping("/{routeId}")
     @ResponseStatus(HttpStatus.OK)
-    public Route updateSingleTrain(@PathVariable("routeId") Integer routeId,
+    public Route updateSingleRoute(@PathVariable("routeId") Integer routeId,
                                    @RequestBody Route route){
         return routeService.updateSingleRoute(route, routeId);
     }
 
     @Operation(summary = "Delete an existing route")
+    @Tag(name = "routes")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "No content"),
             @ApiResponse(responseCode = "404", description = "No route to delete")})

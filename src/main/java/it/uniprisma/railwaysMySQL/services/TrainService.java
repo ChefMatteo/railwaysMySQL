@@ -75,10 +75,7 @@ public class TrainService {
         if(trainToUpdate.getRoutes().add(route)){
             trainRepo.save(trainToUpdate);
         }
-        else {
-            System.out.println(Thread.currentThread().getStackTrace()[0].getFileName()+" "+Thread.currentThread().getStackTrace()[0].getLineNumber());
-            throw new ConflictException("Connection already exist");
-        }
+        else throw new ConflictException("Connection already exist");
     }
 
     public void deleteTrainRouteAssociation(Integer trainId, Integer routeId) {
@@ -94,6 +91,9 @@ public class TrainService {
     public void createOrUpdateTrainWagonAssociation(Integer trainId, Integer wagonId) {
         Train train = trainRepo.findById(trainId).orElseThrow(()->new NotFoundException("Train", trainId));
         Wagon wagon = wagonRepo.findById(wagonId).orElseThrow(()->new NotFoundException("Wagon", wagonId));
+        if(wagon.getTrain().getId()==trainId){
+            throw new ConflictException("Wagon already connected at this train");
+        }
         wagon.setTrain(train);
         wagonRepo.save(wagon);
 
