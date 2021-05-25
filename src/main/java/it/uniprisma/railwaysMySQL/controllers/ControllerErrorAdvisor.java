@@ -18,7 +18,10 @@ public class ControllerErrorAdvisor {
     protected ResponseEntity<Object> handleCustomException(Exception ex){
         return ResponseEntity
                 .status(ex.getClass().getAnnotation(ResponseStatus.class).value())
-                .body(new ErrorResponse(ex.getClass().getName(), ex.getMessage(), ex.getStackTrace()[0].toString()));
+                .body(ErrorResponse.builder()
+                        .exceptionName(ex.getClass().getName())
+                        .message(ex.getMessage())
+                        .position(ex.getStackTrace()[0].toString()));
     }
 
 

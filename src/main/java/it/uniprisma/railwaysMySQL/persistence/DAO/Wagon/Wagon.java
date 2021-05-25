@@ -45,9 +45,7 @@ public class Wagon {
         this.height = height;
         this.bathroom = bathroom;
         this.wagonType = wagonType;
-        if(train!=null){
-            this.train = train;
-        }
+        this.train = train;
     }
 
     public static Wagon createWagon(Train train, WagonDOT wagonDOT){

@@ -2,6 +2,7 @@ package it.uniprisma.railwaysMySQL.persistence.DAO;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import io.swagger.v3.oas.annotations.media.Schema;
 import it.uniprisma.railwaysMySQL.models.enums.TrainType;
@@ -31,6 +32,7 @@ public class Train {
     @EqualsAndHashCode.Exclude
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIdentityReference(alwaysAsId = true)
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @JoinTable(name = "route_trains",
             joinColumns = @JoinColumn(name = "train_id"),
             inverseJoinColumns = @JoinColumn(name = "route_id"))
@@ -38,6 +40,7 @@ public class Train {
     @EqualsAndHashCode.Exclude
     @JsonIdentityReference(alwaysAsId = true)
     @OneToMany(mappedBy = "train", cascade = CascadeType.ALL)
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Set<Wagon> wagons = new HashSet<>();
 
 

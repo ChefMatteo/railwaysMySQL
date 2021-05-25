@@ -2,8 +2,10 @@ package it.uniprisma.railwaysMySQL.persistence.DAO;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -29,5 +31,6 @@ public class Route {
     @EqualsAndHashCode.Exclude
     @ManyToMany(mappedBy = "routes", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIdentityReference(alwaysAsId = true)
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Set<Train> trains = new HashSet<>();
 }

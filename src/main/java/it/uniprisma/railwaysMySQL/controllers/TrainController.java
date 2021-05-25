@@ -169,7 +169,7 @@ public class TrainController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Created", content = {@Content}),
             @ApiResponse(responseCode = "409", description = "Already exists an association between ids in path", content = @Content)})
-    @PostMapping("/{trainId}/wagon/{wagonId}")
+    @PostMapping("/{trainId}/wagons/{wagonId}")
     @ResponseStatus(HttpStatus.CREATED)
     public void createOrUpdateTrainWagonAssociation(@PathVariable("trainId") Integer trainId, @PathVariable("wagonId") Integer wagonId) {
          trainService.createOrUpdateTrainWagonAssociation(trainId, wagonId);

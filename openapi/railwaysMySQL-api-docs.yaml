@@ -1,10 +1,10 @@
 openapi: 3.0.1
 info:
-  title: OpenAPI definition
-  version: v0
+  title: railwaysMySQL-api-docs
+  version: v1
 servers:
 - url: http://localhost:8081
-  description: Generated server url
+  description: Prisma Accademy exercise 5.2
 paths:
   /api/wagons/{wagonId}:
     get:
@@ -697,6 +697,7 @@ components:
         id:
           type: integer
           format: int32
+          readOnly: true
         trainId:
           type: integer
           format: int32
@@ -898,6 +899,7 @@ components:
         id:
           type: integer
           format: int32
+          readOnly: true
         binaryType:
           type: string
         startStation:
@@ -908,6 +910,7 @@ components:
           type: number
           format: double
         trains:
+          readOnly: true
           uniqueItems: true
           type: array
           items:
@@ -921,6 +924,7 @@ components:
         id:
           type: integer
           format: int32
+          readOnly: true
         type:
           type: string
           enum:
@@ -930,6 +934,7 @@ components:
         company:
           type: string
         routes:
+          readOnly: true
           uniqueItems: true
           type: array
           items:
@@ -938,6 +943,7 @@ components:
                 type: number
                 format: int32
         wagons:
+          readOnly: true
           uniqueItems: true
           type: array
           items:
