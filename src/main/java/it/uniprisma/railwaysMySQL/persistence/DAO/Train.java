@@ -20,7 +20,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "train")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Train.class)
 public class Train {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,6 +42,11 @@ public class Train {
     @OneToMany(mappedBy = "train", cascade = CascadeType.ALL)
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Set<Wagon> wagons = new HashSet<>();
+    @EqualsAndHashCode.Exclude
+    @JsonIdentityReference(alwaysAsId = true)
+    @OneToMany(mappedBy = "train", cascade = CascadeType.ALL)
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Set<Ticket> tickets = new HashSet<>();
 
 
 }
